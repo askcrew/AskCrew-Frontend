@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api-backend/:path*",
-        destination: "https://admin.askcrews.com/api/:path*",
+        destination: "https://admin.askcrews.com/api/v1/:path*",
       },
       {
         source: "/api/v1/:path*",
