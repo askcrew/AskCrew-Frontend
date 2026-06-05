@@ -74,9 +74,8 @@ export function transformApiPlans(apiResponse: ApiPlansResponse): {
 // Fetch and transform plans
 export async function fetchPlans(type?: "enterprise" | "student") {
   const endpoints = [
-    "v1/auth/plans/",
-    "v1/auth/plans/discounts/",
     "auth/plans/",
+    "auth/plans/discounts/",
   ];
 
   let lastError: any = null;
