@@ -171,47 +171,10 @@ const handleAuthFailure = async (): Promise<void> => {
 };
 
 const ensureCsrfToken = async (): Promise<void> => {
-  if (typeof window === "undefined") return;
-  
-  const currentToken = getClientCookie("csrftoken");
-  if (!currentToken) {
-    // List of potential endpoints to get CSRF cookie
-    // We try v1/ variations because that's what the backend uses
-    const potentialEndpoints = BASE_URL?.includes("http") 
-      ? [
-          `${BASE_URL}/v1/auth/plans/`, 
-          `${BASE_URL}/v1/auth/login/`,
-          `${BASE_URL}/v1/`,
-          `${BASE_URL}/`
-        ]
-      : [
-          "/api-backend/v1/auth/plans/", 
-          "/api-backend/v1/auth/login/",
-          "/api-backend/v1/",
-          "/api-backend/"
-        ];
-
-    for (const endpoint of potentialEndpoints) {
-      try {
-        console.log(`🚀 Attempting to fetch CSRF from: ${endpoint}`);
-        // Use standard axios to avoid recursion and ensure simple GET
-        await axios.get(endpoint, { withCredentials: true });
-        const token = getClientCookie("csrftoken");
-        if (token) {
-          console.log(`✅ CSRF token initialized from: ${endpoint}`);
-          return;
-        }
-      } catch (error: any) {
-        // Even on 404/405, the cookie might be set
-        const token = getClientCookie("csrftoken");
-        if (token) {
-          console.log(`✅ CSRF token obtained despite error at: ${endpoint}`);
-          return;
-        }
-        console.warn(`⚠️ Failed to fetch CSRF from ${endpoint}:`, error.message);
-      }
-    }
-  }
+  // CSRF token fetching disabled - backend uses JWT authentication
+  // The backend at https://admin.askcrews.com doesn't provide CSRF tokens
+  // and uses access/refresh token authentication instead
+  return;
 };
 
 // Extended config type to include retry flag
@@ -225,8 +188,6 @@ interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
-  xsrfCookieName: "csrftoken",
-  xsrfHeaderName: "X-CSRFToken",
   headers: {
     "Content-Type": "application/json",
   },
@@ -241,15 +202,6 @@ let cachedAccessToken: string | null = null;
 axiosInstance.interceptors.request.use(
   async (config) => {
     let accessToken: string | null = null;
-
-    // Ensure CSRF token for state-changing requests in the browser
-    if (typeof window !== "undefined" && config.method !== "get") {
-      await ensureCsrfToken();
-      const csrfToken = getClientCookie("csrftoken");
-      if (csrfToken) {
-        config.headers["X-CSRFToken"] = csrfToken;
-      }
-    }
 
     if (typeof window === "undefined") {
       // Server-side: get token from cookies directly
