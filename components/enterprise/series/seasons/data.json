@@ -1,0 +1,102 @@
+[
+  {
+    "id": "season1",
+    "seriesId": "s1",
+    "seasonNumber": 1,
+    "title": "The Foundations",
+    "coverPhoto": "/seasons/behind-lens-s1.jpg",
+    "trailer": "/trailers/behind-lens-s1.mp4",
+    "price": 29.99,
+    "actors": [
+      {
+        "name": "Roger Deakins",
+        "image": "/actors/roger-deakins.jpg"
+      },
+      {
+        "name": "Emmanuel Lubezki",
+        "image": "/actors/emmanuel-lubezki.jpg"
+      },
+      {
+        "name": "Rachel Morrison",
+        "image": "/actors/rachel-morrison.jpg"
+      }
+    ],
+    "episodesCount": 12,
+    "releaseDate": "2024-09-15",
+    "createdAt": "2024-09-01T10:00:00Z",
+    "updatedAt": "2024-09-15T14:30:00Z"
+  },
+  {
+    "id": "season2",
+    "seriesId": "s1",
+    "seasonNumber": 2,
+    "title": "Mastering Light",
+    "coverPhoto": "/seasons/behind-lens-s2.jpg",
+    "trailer": "/trailers/behind-lens-s2.mp4",
+    "price": 34.99,
+    "actors": [
+      {
+        "name": "Hoyte van Hoytema",
+        "image": "/actors/hoyte-van-hoytema.jpg"
+      },
+      {
+        "name": "Janusz Kamiński",
+        "image": "/actors/janusz-kaminski.jpg"
+      }
+    ],
+    "episodesCount": 10,
+    "releaseDate": "2024-11-01",
+    "createdAt": "2024-10-15T10:00:00Z",
+    "updatedAt": "2024-11-01T14:30:00Z"
+  },
+  {
+    "id": "season3",
+    "seriesId": "s2",
+    "seasonNumber": 1,
+    "title": "Pre-Production Essentials",
+    "coverPhoto": "/seasons/film-school-s1.jpg",
+    "trailer": "/trailers/film-school-s1.mp4",
+    "price": 19.99,
+    "actors": [
+      {
+        "name": "Sarah Miller",
+        "image": "/actors/sarah-miller.jpg"
+      },
+      {
+        "name": "David Chen",
+        "image": "/actors/david-chen.jpg"
+      },
+      {
+        "name": "Lisa Anderson",
+        "image": "/actors/lisa-anderson.jpg"
+      }
+    ],
+    "episodesCount": 24,
+    "releaseDate": "2024-08-20",
+    "createdAt": "2024-08-01T09:00:00Z",
+    "updatedAt": "2024-08-20T16:20:00Z"
+  },
+  {
+    "id": "season4",
+    "seriesId": "s3",
+    "seasonNumber": 1,
+    "title": "Breaking Into the Industry",
+    "coverPhoto": "/seasons/indie-diaries-s1.jpg",
+    "trailer": "/trailers/indie-diaries-s1.mp4",
+    "price": 24.99,
+    "actors": [
+      {
+        "name": "Marcus Johnson",
+        "image": "/actors/marcus-johnson.jpg"
+      },
+      {
+        "name": "Elena Rodriguez",
+        "image": "/actors/elena-rodriguez.jpg"
+      }
+    ],
+    "episodesCount": 8,
+    "releaseDate": "2024-10-05",
+    "createdAt": "2024-09-20T11:30:00Z",
+    "updatedAt": "2024-10-05T10:15:00Z"
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "s1",
+    "title": "Behind the Lens",
+    "about": "A documentary series exploring the art and craft of cinematography. Follow renowned cinematographers as they share their techniques, challenges, and creative processes behind iconic film scenes.",
+    "coverPhoto": "/series/behind-lens.jpg",
+    "category": "Documentary",
+    "episodesCount": 12,
+    "viewsCount": 45230,
+    "rating": 4.8,
+    "createdAt": "2024-09-15T10:00:00Z",
+    "updatedAt": "2024-12-01T14:30:00Z"
+  },
+  {
+    "id": "s2",
+    "title": "Film School Fundamentals",
+    "about": "An educational series covering the basics of filmmaking, from pre-production to post-production. Perfect for aspiring filmmakers and students looking to master the fundamentals.",
+    "coverPhoto": "/series/film-school.jpg",
+    "category": "Educational",
+    "episodesCount": 24,
+    "viewsCount": 78450,
+    "rating": 4.9,
+    "createdAt": "2024-08-20T09:00:00Z",
+    "updatedAt": "2024-11-28T16:20:00Z"
+  },
+  {
+    "id": "s3",
+    "title": "Indie Filmmaker Diaries",
+    "about": "Real stories from independent filmmakers navigating the challenges of creating films outside the studio system. Learn from their successes, failures, and everything in between.",
+    "coverPhoto": "/series/indie-diaries.jpg",
+    "category": "Reality",
+    "episodesCount": 8,
+    "viewsCount": 32100,
+    "rating": 4.6,
+    "createdAt": "2024-10-05T11:30:00Z",
+    "updatedAt": "2024-12-03T10:15:00Z"
+  },
+  {
+    "id": "s4",
+    "title": "Sound Design Masterclass",
+    "about": "Dive deep into the world of sound design and audio post-production. Industry professionals reveal their secrets for creating immersive soundscapes that elevate storytelling.",
+    "coverPhoto": "/series/sound-design.jpg",
+    "category": "Tutorial",
+    "episodesCount": 16,
+    "viewsCount": 56780,
+    "rating": 4.7,
+    "createdAt": "2024-07-10T08:00:00Z",
+    "updatedAt": "2024-12-02T12:45:00Z"
+  },
+  {
+    "id": "s5",
+    "title": "VFX Breakdown",
+    "about": "Explore the magic of visual effects with detailed breakdowns of stunning VFX work. See how artists transform raw footage into breathtaking cinematic moments.",
+    "coverPhoto": "/series/vfx-breakdown.jpg",
+    "category": "Tutorial",
+    "episodesCount": 10,
+    "viewsCount": 91200,
+    "rating": 4.9,
+    "createdAt": "2024-11-01T15:00:00Z",
+    "updatedAt": "2024-12-04T11:00:00Z"
+  },
+  {
+    "id": "s6",
+    "title": "Director's Vision",
+    "about": "Intimate conversations with acclaimed directors about their creative vision, directorial approach, and the stories behind their most memorable films.",
+    "coverPhoto": "/series/directors-vision.jpg",
+    "category": "Interview",
+    "episodesCount": 6,
+    "viewsCount": 28900,
+    "rating": 4.5,
+    "createdAt": "2024-09-25T13:20:00Z",
+    "updatedAt": "2024-11-30T09:30:00Z"
+  }
+]

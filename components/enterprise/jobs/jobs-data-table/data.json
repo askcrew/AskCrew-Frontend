@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "title": "Lead Actor - Drama Series",
+    "startDate": "2024-02-01",
+    "endDate": "2024-06-30",
+    "applicantsCount": 45,
+    "description": "Seeking experienced lead actor for upcoming drama series.",
+    "status": "upcoming",
+    "location": "Los Angeles, CA",
+    "salary": "$50,000 - $80,000",
+    "type": "full-time"
+  },
+  {
+    "id": "2",
+    "title": "Camera Operator",
+    "startDate": "2024-01-15",
+    "endDate": "2024-03-15",
+    "applicantsCount": 28,
+    "description": "Experienced camera operator needed for documentary project.",
+    "status": "ongoing",
+    "location": "New York, NY",
+    "salary": "$35,000 - $45,000",
+    "type": "contract"
+  },
+  {
+    "id": "3",
+    "title": "Film Editor",
+    "startDate": "2023-11-01",
+    "endDate": "2023-12-31",
+    "applicantsCount": 52,
+    "description": "Post-production editor for feature film.",
+    "status": "concluded",
+    "location": "Atlanta, GA",
+    "salary": "$40,000 - $55,000",
+    "type": "contract"
+  },
+  {
+    "id": "4",
+    "title": "Production Designer",
+    "startDate": "2024-03-01",
+    "endDate": "2024-05-31",
+    "applicantsCount": 18,
+    "description": "Creative production designer for indie film project.",
+    "status": "upcoming",
+    "location": "Austin, TX",
+    "salary": "$45,000 - $60,000",
+    "type": "contract"
+  },
+  {
+    "id": "5",
+    "title": "Sound Engineer",
+    "startDate": "2023-10-15",
+    "endDate": "2023-12-15",
+    "applicantsCount": 35,
+    "description": "Professional sound engineer for studio recording sessions.",
+    "status": "concluded",
+    "location": "Nashville, TN",
+    "salary": "$38,000 - $50,000",
+    "type": "full-time"
+  }
+]

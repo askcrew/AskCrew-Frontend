@@ -1,0 +1,98 @@
+[
+  {
+    "id": "q1",
+    "title": "How to improve cinematography in low-light conditions?",
+    "description": "I'm working on a project that requires shooting in low-light environments. What are the best practices and equipment recommendations for achieving professional-quality cinematography?",
+    "category": "Cinematography",
+    "tags": ["lighting", "camera", "techniques"],
+    "answersCount": 12,
+    "viewsCount": 245,
+    "status": "answered",
+    "createdAt": "2024-11-15T10:30:00Z",
+    "updatedAt": "2024-11-20T14:22:00Z"
+  },
+  {
+    "id": "q2",
+    "title": "Best practices for directing first-time actors?",
+    "description": "I have a project coming up with several first-time actors. What are some effective techniques to help them deliver natural performances?",
+    "category": "Directing",
+    "tags": ["acting", "directing", "performance"],
+    "answersCount": 8,
+    "viewsCount": 189,
+    "status": "answered",
+    "createdAt": "2024-11-18T09:15:00Z",
+    "updatedAt": "2024-11-22T16:45:00Z"
+  },
+  {
+    "id": "q3",
+    "title": "Recommended color grading software for beginners?",
+    "description": "I'm new to color grading and looking for software that's beginner-friendly but still professional. What do you recommend?",
+    "category": "Post-Production",
+    "tags": ["color-grading", "software", "editing"],
+    "answersCount": 15,
+    "viewsCount": 312,
+    "status": "answered",
+    "createdAt": "2024-11-10T14:20:00Z",
+    "updatedAt": "2024-11-25T11:30:00Z"
+  },
+  {
+    "id": "q4",
+    "title": "How to manage budget for independent film production?",
+    "description": "I'm producing my first independent film and need advice on budget management, cost-cutting strategies, and resource allocation.",
+    "category": "Production",
+    "tags": ["budget", "production", "planning"],
+    "answersCount": 5,
+    "viewsCount": 156,
+    "status": "open",
+    "createdAt": "2024-11-28T08:45:00Z",
+    "updatedAt": "2024-11-30T10:12:00Z"
+  },
+  {
+    "id": "q5",
+    "title": "Sound design tips for outdoor scenes?",
+    "description": "I'm struggling with capturing clean audio in outdoor locations. What equipment and techniques should I use to minimize wind noise and background interference?",
+    "category": "Sound Design",
+    "tags": ["audio", "sound", "outdoor"],
+    "answersCount": 0,
+    "viewsCount": 78,
+    "status": "open",
+    "createdAt": "2024-12-01T12:00:00Z",
+    "updatedAt": "2024-12-01T12:00:00Z"
+  },
+  {
+    "id": "q6",
+    "title": "Scriptwriting software comparison: Final Draft vs. Celtx?",
+    "description": "I'm looking to invest in professional scriptwriting software. Can anyone share their experience with Final Draft and Celtx?",
+    "category": "Scriptwriting",
+    "tags": ["software", "writing", "tools"],
+    "answersCount": 20,
+    "viewsCount": 445,
+    "status": "answered",
+    "createdAt": "2024-11-05T16:30:00Z",
+    "updatedAt": "2024-11-28T09:15:00Z"
+  },
+  {
+    "id": "q7",
+    "title": "How to build a strong portfolio as a VFX artist?",
+    "description": "I'm transitioning into VFX work and need guidance on building a portfolio that stands out to potential clients and employers.",
+    "category": "VFX",
+    "tags": ["portfolio", "career", "vfx"],
+    "answersCount": 3,
+    "viewsCount": 134,
+    "status": "open",
+    "createdAt": "2024-11-26T11:20:00Z",
+    "updatedAt": "2024-11-29T15:40:00Z"
+  },
+  {
+    "id": "q8",
+    "title": "Legal considerations for using music in films?",
+    "description": "What are the legal requirements and best practices for licensing music for use in independent films? Any tips on finding affordable options?",
+    "category": "Legal",
+    "tags": ["music", "licensing", "legal"],
+    "answersCount": 7,
+    "viewsCount": 201,
+    "status": "answered",
+    "createdAt": "2024-11-12T13:45:00Z",
+    "updatedAt": "2024-11-24T10:30:00Z"
+  }
+]

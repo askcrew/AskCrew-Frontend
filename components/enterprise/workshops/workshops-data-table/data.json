@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "title": "Acting Masterclass",
+    "startDate": "2024-01-15",
+    "endDate": "2024-01-20",
+    "applicantsCount": 25,
+    "description": "A comprehensive masterclass on acting techniques.",
+    "status": "upcoming"
+  },
+  {
+    "id": "2",
+    "title": "Screenwriting Workshop",
+    "startDate": "2023-12-01",
+    "endDate": "2023-12-05",
+    "applicantsCount": 15,
+    "description": "Learn the basics of screenwriting and story structure.",
+    "status": "ongoing"
+  },
+  {
+    "id": "3",
+    "title": "Cinematography Basics",
+    "startDate": "2023-11-10",
+    "endDate": "2023-11-12",
+    "applicantsCount": 30,
+    "description": "Introduction to camera angles, lighting, and composition.",
+    "status": "concluded"
+  },
+  {
+    "id": "4",
+    "title": "Directing 101",
+    "startDate": "2024-02-01",
+    "endDate": "2024-02-05",
+    "applicantsCount": 10,
+    "description": "Learn how to direct your first short film.",
+    "status": "upcoming"
+  },
+  {
+    "id": "5",
+    "title": "Film Editing",
+    "startDate": "2023-10-01",
+    "endDate": "2023-10-05",
+    "applicantsCount": 20,
+    "description": "Master the art of film editing with Adobe Premiere Pro.",
+    "status": "concluded"
+  }
+]
