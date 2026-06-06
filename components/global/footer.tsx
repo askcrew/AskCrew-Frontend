@@ -51,19 +51,19 @@ const Footer = () => {
                 <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
                   <Mail className="w-4 h-4 text-purple-600" />
                 </div>
-                <span>support@pear.com</span>
+                <span>askcrew.kw@gmail.com</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <div className="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center">
                   <Phone className="w-4 h-4 text-orange-600" />
                 </div>
-                <span>+1 (555) 123-4567</span>
+                <span>+965 55583770</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <div className="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center">
                   <MapPin className="w-4 h-4 text-pink-600" />
                 </div>
-                <span>San Francisco, CA</span>
+                <span>Kuwait</span>
               </div>
             </div>
           </div>
