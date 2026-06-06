@@ -42,21 +42,38 @@ interface Movie {
 }
 
 const getMoviesAndSeries = async (): Promise<Movie[]> => {
-  const response = await axiosInstance.get("/content/movies_with_series/");
-  const apiData: ApiMovie[] = response.data;
+  try {
+    console.log("Fetching movies and series from /api/proxy/content/movies-with-series");
+    const response = await fetch("/api/proxy/content/movies-with-series");
+    const data = await response.json();
+    console.log("Movies and series response:", data);
 
-  // Transform the data to match the expected format
-  return apiData.map((item) => ({
-    id: item.id,
-    title: item.title || item.name || "Untitled",
-    name: item.name,
-    cover_image: item.cover_photo || item.cover_image || item.image || "",
-    rating: item.rating || item.rating_mean || 0,
-    category: item.category?.name,
-    description: item.description || item.about,
-    about: item.about,
-    art_work_type: item.art_work_type,
-  }));
+    // Handle both paginated and direct array responses
+    let apiData: ApiMovie[] = [];
+    if (Array.isArray(data)) {
+      apiData = data;
+    } else if (data && Array.isArray(data.results)) {
+      apiData = data.results;
+    } else if (data && data.data && Array.isArray(data.data)) {
+      apiData = data.data;
+    }
+
+    // Transform the data to match the expected format
+    return apiData.map((item) => ({
+      id: item.id,
+      title: item.title || item.name || "Untitled",
+      name: item.name,
+      cover_image: item.cover_photo || item.cover_image || item.image || "",
+      rating: item.rating || item.rating_mean || 0,
+      category: item.category?.name,
+      description: item.description || item.about,
+      about: item.about,
+      art_work_type: item.art_work_type,
+    }));
+  } catch (error) {
+    console.error("Error fetching movies and series:", error);
+    throw error;
+  }
 };
 
 export function SeriesAndMovies() {

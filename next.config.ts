@@ -8,10 +8,6 @@ const nextConfig: NextConfig = {
         source: "/api-backend/:path*",
         destination: "https://admin.askcrews.com/api/v1/:path*",
       },
-      {
-        source: "/api/v1/:path*",
-        destination: "https://admin.askcrews.com/api/v1/:path*",
-      },
     ];
   },
   images: {

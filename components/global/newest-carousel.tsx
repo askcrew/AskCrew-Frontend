@@ -55,30 +55,50 @@ interface ApiBannerResponse {
 }
 
 const getBanners = async (): Promise<Banner[]> => {
-  const response = await axiosInstance.get<ApiBannerResponse>(
-    "/content/banners"
-  );
+  try {
+    console.log("Fetching banners from /api/proxy/content/banners");
+    const response = await fetch("/api/proxy/content/banners");
+    
+    if (!response.ok) {
+      console.error("Proxy response not ok:", response.status, response.statusText);
+      throw new Error(`Proxy returned ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    console.log("Banners response:", data);
 
-  if (!response.data.results || !Array.isArray(response.data.results)) {
-    return [];
+    // Handle both paginated and direct array responses
+    let results = [];
+    if (data && Array.isArray(data.results)) {
+      results = data.results;
+    } else if (Array.isArray(data)) {
+      results = data;
+    }
+
+    if (!results || results.length === 0) {
+      return [];
+    }
+
+    return results.map((banner: any) => ({
+      id: banner.id,
+      title: banner.content_object?.title || banner.content_object?.name || "Untitled",
+      image: banner.content_object?.cover_photo || banner.content_object?.cover_image || banner.content_object?.image || "/lala.jpg",
+      rating: banner.content_object?.rating_mean,
+      release_date: new Date(banner.content_object?.created_at).toLocaleDateString(
+        "en-US",
+        {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        }
+      ),
+      description: banner.description,
+      content_type: banner.content_type,
+    }));
+  } catch (error) {
+    console.error("Error fetching banners:", error);
+    throw error;
   }
-
-  return response.data.results.map((banner) => ({
-    id: banner.id,
-    title: banner.content_object.title || banner.content_object.name || "Untitled",
-    image: banner.content_object.cover_photo || banner.content_object.cover_image || banner.content_object.image || "/lala.jpg",
-    rating: banner.content_object.rating_mean,
-    release_date: new Date(banner.content_object.created_at).toLocaleDateString(
-      "en-US",
-      {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      }
-    ),
-    description: banner.description,
-    content_type: banner.content_type,
-  }));
 };
 
 export function NewestCarousel() {

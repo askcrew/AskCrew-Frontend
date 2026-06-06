@@ -59,22 +59,44 @@ interface MovieForCard {
 }
 
 const getTrendingContent = async (): Promise<MovieForCard[]> => {
-  const response = await axiosInstance.get<ExploreApiResponse[]>(
-    "/content/explore/"
-  );
+  try {
+    console.log("Fetching trending content from /api/proxy/content/explore");
+    const response = await fetch("/api/proxy/content/explore");
+    
+    if (!response.ok) {
+      console.error("Proxy response not ok:", response.status, response.statusText);
+      throw new Error(`Proxy returned ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    console.log("Trending content response:", data);
 
-  return response.data.map((item) => ({
-    id: item.data.id,
-    title: item.data.title || item.data.name || "Untitled",
-    name: item.data.name,
-    cover_image: item.data.cover_photo || item.data.cover_image || item.data.image || "",
-    rating: item.data.rating_mean,
-    progress: 0,
-    category: item.data.category?.name || "",
-    description: item.data.about || "",
-    about: item.data.about,
-    art_work_type: item.data.art_work_type,
-  }));
+    // Handle both paginated and direct array responses
+    let apiData: ExploreApiResponse[] = [];
+    if (Array.isArray(data)) {
+      apiData = data;
+    } else if (data && Array.isArray(data.results)) {
+      apiData = data.results;
+    } else if (data && data.data && Array.isArray(data.data)) {
+      apiData = data.data;
+    }
+
+    return apiData.map((item) => ({
+      id: item.data.id,
+      title: item.data.title || item.data.name || "Untitled",
+      name: item.data.name,
+      cover_image: item.data.cover_photo || item.data.cover_image || item.data.image || "",
+      rating: item.data.rating_mean,
+      progress: 0,
+      category: item.data.category?.name || "",
+      description: item.data.about || "",
+      about: item.data.about,
+      art_work_type: item.data.art_work_type,
+    }));
+  } catch (error) {
+    console.error("Error fetching trending content:", error);
+    throw error;
+  }
 };
 
 const MarqueeTopPicks = () => {
