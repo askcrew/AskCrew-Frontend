@@ -39,9 +39,16 @@ function TrailersContent() {
         const p: Record<string, string> = { page: "1" };
         const c = searchParams.get("categories");
         if (c) p.category = c;
-        const r = await axiosInstance.get<TrendingResponse>("/content/trending/", { params: p });
-        setContent(r.data.results);
-        if (startId) { const i = r.data.results.findIndex((x) => x.id.toString() === startId); if (i !== -1) setIdx(i); }
+        const queryString = new URLSearchParams(p).toString();
+        const response = await fetch(`https://admin.askcrews.com/api/v1/content/trending/?${queryString}`);
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        setContent(data.results);
+        if (startId) { const i = data.results.findIndex((x: any) => x.id.toString() === startId); if (i !== -1) setIdx(i); }
       } catch { Swal.fire({ icon: "error", title: "Error", text: "Failed to load." }); }
       finally { setLoading(false); }
     })();
@@ -50,8 +57,14 @@ function TrailersContent() {
   const fetchTrailer = useCallback(async (id: number) => {
     setTrailers((p) => { const n = new Map(p); n.set(id, { contentId: id, trailerUrl: null, isLoading: true }); return n; });
     try {
-      const r = await axiosInstance.get(`/content/videos/movie/${id}/trailer-token`);
-      setTrailers((p) => { const n = new Map(p); n.set(id, { contentId: id, trailerUrl: r.data.embed_url || r.data.token || r.data, isLoading: false }); return n; });
+      const response = await fetch(`https://admin.askcrews.com/api/v1/content/videos/movie/${id}/trailer-token`);
+      const r = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      setTrailers((p) => { const n = new Map(p); n.set(id, { contentId: id, trailerUrl: r.embed_url || r.token || r, isLoading: false }); return n; });
     } catch { setTrailers((p) => { const n = new Map(p); n.set(id, { contentId: id, trailerUrl: null, isLoading: false }); return n; }); }
   }, []);
 

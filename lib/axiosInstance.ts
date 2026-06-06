@@ -201,6 +201,9 @@ let cachedAccessToken: string | null = null;
 // ==========================================
 axiosInstance.interceptors.request.use(
   async (config) => {
+    console.log("Base URL:", config.baseURL);
+    console.log("Request URL:", config.url);
+    console.log("Full URL:", `${config.baseURL}${config.url}`);
     let accessToken: string | null = null;
 
     if (typeof window === "undefined") {

@@ -39,19 +39,22 @@ export default function InTrendPage() {
           params.category = selectedCategories.join(",");
         }
 
-        const response = await axiosInstance.get<TrendingResponse>(
-          "/content/trending/",
-          { params }
-        );
+        const queryString = new URLSearchParams(params).toString();
+        const response = await fetch(`https://admin.askcrews.com/api/v1/content/trending/?${queryString}`);
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-        setTrendingContent(response.data.results);
+        setTrendingContent(data.results);
 
         // Calculate total pages (assuming 10 items per page)
-        setTotalPages(Math.ceil(response.data.count / 10));
+        setTotalPages(Math.ceil(data.count / 10));
 
         // Extract unique categories from results
         const uniqueCategories = Array.from(
-          new Set(response.data.results.map((item) => item.category.name))
+          new Set(data.results.map((item: any) => item.category.name)) as Set<string>
         ).map((name) => ({
           id: name.toLowerCase().replace(/\s+/g, "-"),
           label: name,
