@@ -82,13 +82,15 @@ export async function fetchPlans(type?: "enterprise" | "student") {
 
   for (const endpoint of endpoints) {
     try {
-      const response = await axiosInstance.get(endpoint, {
-        params: { type },
-      });
+      const params = type ? `?type=${type}` : "";
+      const response = await fetch(`https://admin.askcrews.com/api/v1/${endpoint}${params}`);
+      const data = await response.json();
       
-      console.log(`Plans API Response from ${endpoint}:`, response.data);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       
-      const data = response.data;
+      console.log(`Plans API Response from ${endpoint}:`, data);
       
       // Handle both paginated and direct array responses
       let results: ApiPlan[] = [];

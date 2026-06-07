@@ -187,13 +187,6 @@ export function MovieCard({ movie, onCardClick }: MovieCardProps) {
           </Button>
         </div>
       </div>
-
-      {/* Title below card - hidden on mobile, visible on desktop when not hovering */}
-      <div className="hidden md:block md:group-hover/moviecard:opacity-0 transition-opacity duration-200">
-        <h3 className="text-sm font-semibold text-foreground line-clamp-2 leading-tight">
-          {title}
-        </h3>
-      </div>
     </div>
   );
 }

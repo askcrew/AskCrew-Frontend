@@ -19,11 +19,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import axiosInstance from "@/lib/axiosInstance";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-import { Loader2, Building2, GraduationCap } from "lucide-react";
+import { Loader2, Building2, GraduationCap, X } from "lucide-react";
 import { AxiosError } from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPlans } from "@/components/pricing/pricing-data";
 import { PricingCard } from "@/components/pricing/pricing-card";
+import CustomSelect from "@/components/global/custom-select";
+import { Badge } from "@/components/ui/badge";
 
 // ==========================================
 // Types and Schemas
@@ -72,24 +74,127 @@ type EnterpriseCompleteData = z.infer<typeof enterpriseCompleteSchema>;
 // Options
 // ==========================================
 
-const specsOptions: Option[] = [
-  { label: "Director", value: "director" },
-  { label: "Producer", value: "producer" },
-  { label: "Copywriter", value: "Copywriter" },
-  { label: "Photography", value: "Photography" },
-  { label: "Assistant Director", value: "Assistant Director" },
-  { label: "Art Director", value: "art-director" },
-  { label: "Camera Operator", value: "camera-operator" },
-  { label: "Video Editor", value: "video-editor" },
-  { label: "Film Distributor", value: "film-distributor" },
-  { label: "VFX Artist", value: "vfx-artist" },
-  { label: "Mentor", value: "mentor" },
-  { label: "Stylist", value: "stylist" },
-  { label: "Makeup Artist", value: "makeup-artist" },
-  { label: "Casting Director", value: "casting-director" },
-  { label: "Sound Engineer", value: "sound-engineer" },
-  { label: "Studio Owner", value: "studio-owner" },
-];
+const formatLabel = (str: string) => {
+  if (!str || typeof str !== "string") return "";
+  return str
+    .split("_")
+    .map((word) => {
+      if (word === "/") return "/";
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ")
+    .replace(/ \/ /g, " / ")
+    .replace(/Dop/g, "DOP")
+    .replace(/Vfx/g, "VFX")
+    .replace(/Cgi/g, "CGI");
+};
+
+const fallbackSpecifications: Record<string, string[]> = {
+  direction: [
+    "director",
+    "executive_director",
+    "assistant_director",
+    "art_director",
+    "lighting_director",
+    "scenic_director",
+    "workshop_director",
+  ],
+  acting: [
+    "actor",
+    "actress",
+    "lead_actor",
+    "supporting_actor",
+    "character_actor",
+    "extra_/_background_actor",
+    "stand_in",
+    "stunt_double",
+    "voice_actor",
+  ],
+  production: [
+    "producer",
+    "executive_producer",
+    "line_producer",
+    "co_producer",
+    "production_manager",
+    "production_assistant",
+    "production_coordinator",
+    "location_manager",
+  ],
+  cinematography: [
+    "director_of_photography_dop",
+    "camera_operator",
+    "photographer",
+    "1st_assistant_camera_focus_puller",
+    "2nd_assistant_camera_clapper",
+    "steadicam_operator",
+    "crane_operator",
+  ],
+  sound: [
+    "sound_engineer",
+    "sound_designer",
+    "sound_recordist_/_production_mixer",
+    "re_recording_mixer",
+    "foley_artist",
+    "sound_editor",
+  ],
+  lighting: [
+    "gaffer",
+    "lighting_technician",
+    "best_boy_electric",
+    "generator_operator",
+  ],
+  art_set_decoration: [
+    "production_designer",
+    "set_designer",
+    "set_decorator",
+    "scenic_artist",
+    "prop_master_/_props",
+    "construction_coordinator",
+    "painter",
+  ],
+  graphics_vfx: [
+    "vfx_artist",
+    "graphic_designer",
+    "vfx_supervisor",
+    "motion_graphics_artist",
+    "cgi_artist",
+    "compositor",
+  ],
+  editing: [
+    "video_editor",
+    "assistant_editor",
+    "online_editor",
+    "offline_editor",
+    "colorist",
+  ],
+  makeup_wardrobe: [
+    "makeup_artist",
+    "makeup_assistant",
+    "special_effects_makeup_artist",
+    "hair_stylist",
+    "costume_designer",
+    "costume_assistant",
+    "wardrobe_supervisor",
+    "stylist",
+  ],
+  engineering_technicians: [
+    "chief_engineer",
+    "studio_technician",
+    "video_engineer",
+    "camera_technician",
+    "rigging_technician",
+    "chroma_key_technician",
+  ],
+  writing_preparation: [
+    "scriptwriter",
+    "author_/_writer",
+    "screenwriter",
+    "copywriter",
+    "preparer_/_developer",
+    "researcher",
+    "dialogue_writer",
+  ],
+};
 
 const experienceOptions: Option[] = [
   { label: "Beginner ( less than 1 year )", value: "Beginner" },
@@ -122,6 +227,7 @@ function StudentCompleteForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const router = useRouter();
 
   const { data: plansData, isLoading: isPlansLoading, isError: isPlansError, refetch: refetchPlansData } = useQuery({
@@ -130,6 +236,11 @@ function StudentCompleteForm({
   });
 
   const studentPlans = plansData?.studentPlans || [];
+
+  const categoryOptions = Object.keys(fallbackSpecifications).map((key) => ({
+    label: formatLabel(key),
+    value: key,
+  }));
 
   const {
     register,
@@ -153,6 +264,24 @@ function StudentCompleteForm({
       plan_id: undefined,
     },
   });
+
+  const currentCategoryOptions: Option[] = (() => {
+    if (!selectedCategory || !fallbackSpecifications[selectedCategory]) {
+      return [];
+    }
+    return fallbackSpecifications[selectedCategory].map((item: string) => ({
+      label: formatLabel(item),
+      value: item,
+    }));
+  })();
+
+  const currentCategoryValues = (() => {
+    if (!selectedCategory || !fallbackSpecifications[selectedCategory]) {
+      return [];
+    }
+    const categorySpecs = fallbackSpecifications[selectedCategory];
+    return watch("specification").filter((s) => categorySpecs.includes(s));
+  })();
 
   const onSubmit = async (data: StudentCompleteData) => {
     setIsSubmitting(true);
@@ -372,12 +501,70 @@ function StudentCompleteForm({
             <label className="block text-sm font-semibold text-gray-900 mb-2">
               Specification
             </label>
-            <CheckboxGroup
-              options={specsOptions}
-              value={watch("specification")}
-              onValueChange={(value) => setValue("specification", value)}
-              listClassName="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto"
+            <CustomSelect
+              label="Select Category"
+              placeholder="Choose a category..."
+              options={categoryOptions}
+              value={selectedCategory}
+              onValueChange={(value) => setSelectedCategory(value)}
             />
+
+            {selectedCategory && (
+              <div className="space-y-4 mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                <h3 className="font-medium text-gray-700">
+                  Select roles in {formatLabel(selectedCategory)}:
+                </h3>
+                <CheckboxGroup
+                  options={currentCategoryOptions}
+                  value={currentCategoryValues}
+                  listClassName="grid md:grid-cols-2 gap-4"
+                  onValueChange={(value: string[]) => {
+                    const categorySpecs = fallbackSpecifications[selectedCategory];
+                    
+                    // Remove all current category specs from the global list
+                    const otherCategorySpecs: string[] = watch("specification").filter(
+                      (s) => !categorySpecs.includes(s)
+                    );
+                    
+                    // Add the new selections for this category
+                    const newSpecs = Array.from(new Set([...otherCategorySpecs, ...value]));
+                    
+                    setValue("specification", newSpecs);
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Selected Specs Summary */}
+            {watch("specification").length > 0 && (
+              <div className="pt-6 border-t mt-4">
+                <h3 className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wider">
+                  Selected Specifications ({watch("specification").length})
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {watch("specification").map((spec, index) => (
+                    <Badge
+                      key={`${spec}-${index}`}
+                      variant="secondary"
+                      className="pl-3 pr-1 py-1 flex items-center gap-1 bg-orange-50 text-orange-700 border-orange-200"
+                    >
+                      {formatLabel(spec)}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newSpecs = watch("specification").filter((s) => s !== spec);
+                          setValue("specification", newSpecs);
+                        }}
+                        className="p-0.5 hover:bg-orange-200 rounded-full transition-colors"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {errors.specification && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.specification.message}
@@ -480,6 +667,7 @@ function EnterpriseCompleteForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [images, setImages] = useState<File[]>([]);
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   const { data: plansData, isLoading: isPlansLoading, isError: isPlansError, refetch: refetchPlansData } = useQuery({
     queryKey: ["plans", "enterprise"],
@@ -487,6 +675,11 @@ function EnterpriseCompleteForm({
   });
 
   const enterprisePlans = plansData?.enterprisePlans || [];
+
+  const categoryOptions = Object.keys(fallbackSpecifications).map((key) => ({
+    label: formatLabel(key),
+    value: key,
+  }));
 
   const {
     register,
@@ -504,6 +697,24 @@ function EnterpriseCompleteForm({
       plan_id: undefined,
     },
   });
+
+  const currentCategoryOptions: Option[] = (() => {
+    if (!selectedCategory || !fallbackSpecifications[selectedCategory]) {
+      return [];
+    }
+    return fallbackSpecifications[selectedCategory].map((item: string) => ({
+      label: formatLabel(item),
+      value: item,
+    }));
+  })();
+
+  const currentCategoryValues = (() => {
+    if (!selectedCategory || !fallbackSpecifications[selectedCategory]) {
+      return [];
+    }
+    const categorySpecs = fallbackSpecifications[selectedCategory];
+    return watch("specification").filter((s) => categorySpecs.includes(s));
+  })();
 
   const onSubmit = async (data: EnterpriseCompleteData) => {
     setIsSubmitting(true);
@@ -681,12 +892,70 @@ function EnterpriseCompleteForm({
             <label className="block text-sm font-semibold text-gray-900 mb-2">
               Specification
             </label>
-            <CheckboxGroup
-              options={specsOptions}
-              value={watch("specification")}
-              onValueChange={(value) => setValue("specification", value)}
-              listClassName="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto"
+            <CustomSelect
+              label="Select Category"
+              placeholder="Choose a category..."
+              options={categoryOptions}
+              value={selectedCategory}
+              onValueChange={(value) => setSelectedCategory(value)}
             />
+
+            {selectedCategory && (
+              <div className="space-y-4 mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                <h3 className="font-medium text-gray-700">
+                  Select roles in {formatLabel(selectedCategory)}:
+                </h3>
+                <CheckboxGroup
+                  options={currentCategoryOptions}
+                  value={currentCategoryValues}
+                  listClassName="grid md:grid-cols-2 gap-4"
+                  onValueChange={(value: string[]) => {
+                    const categorySpecs = fallbackSpecifications[selectedCategory];
+                    
+                    // Remove all current category specs from the global list
+                    const otherCategorySpecs: string[] = watch("specification").filter(
+                      (s) => !categorySpecs.includes(s)
+                    );
+                    
+                    // Add the new selections for this category
+                    const newSpecs = Array.from(new Set([...otherCategorySpecs, ...value]));
+                    
+                    setValue("specification", newSpecs);
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Selected Specs Summary */}
+            {watch("specification").length > 0 && (
+              <div className="pt-6 border-t mt-4">
+                <h3 className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wider">
+                  Selected Specifications ({watch("specification").length})
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {watch("specification").map((spec, index) => (
+                    <Badge
+                      key={`${spec}-${index}`}
+                      variant="secondary"
+                      className="pl-3 pr-1 py-1 flex items-center gap-1 bg-orange-50 text-orange-700 border-orange-200"
+                    >
+                      {formatLabel(spec)}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newSpecs = watch("specification").filter((s) => s !== spec);
+                          setValue("specification", newSpecs);
+                        }}
+                        className="p-0.5 hover:bg-orange-200 rounded-full transition-colors"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {errors.specification && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.specification.message}

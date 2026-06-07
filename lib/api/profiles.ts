@@ -69,15 +69,17 @@ export const getProfileById = async (id: string): Promise<UserProfile> => {
 
 export async function getCurrentUserProfile() {
   try {
-    const response = await axiosInstance.get("/auth/profiles/my-profile/");
-    console.log("res", response);
-    return { success: true, data: response.data };
-  } catch (error: unknown) {
-    const err = error as AxiosError;
-    console.error("Error fetching user profile:", error);
-    if (err.response?.status === 401) {
-      return { success: false, error: "Unauthorized" };
+    const response = await fetch("https://admin.askcrews.com/api/v1/auth/profiles/my-profile/");
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return { success: false, error: err.message || "An error occurred" };
+    
+    console.log("res", data);
+    return { success: true, data };
+  } catch (error: unknown) {
+    console.error("Error fetching user profile:", error);
+    return { success: false, error: error instanceof Error ? error.message : "An error occurred" };
   }
 }
