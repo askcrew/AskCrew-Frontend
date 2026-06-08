@@ -35,10 +35,10 @@ import {
 } from "@/components/ui/accordion";
 import { LogoutDialog } from "@/components/profile/logout-dialog";
 import { DeleteAccountDialog } from "@/components/profile/delete-account-dialog";
-import { logout } from "@/lib/actions/auth";
-import { getCurrentUserProfile } from "@/lib/api/profiles";
+import { logout, getCurrentUserProfile } from "@/lib/actions/auth";
 import { useWatermarkPayment } from "@/lib/queries/payment";
 import Swal from "sweetalert2";
+import { useQuery } from "@tanstack/react-query";
 
 interface Profile {
   name: string;
@@ -80,42 +80,34 @@ export default function ProfileDropdown({
   const [isOpen, setIsOpen] = React.useState(false);
   const [showLogoutDialog, setShowLogoutDialog] = React.useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
-  const [profileData, setProfileData] = React.useState<Profile>(
-    propData || SAMPLE_PROFILE_DATA,
-  );
-  const [isLoading, setIsLoading] = React.useState(!propData);
 
   const { mutate: getVerified, isPending: isVerifying } = useWatermarkPayment();
 
-  React.useEffect(() => {
-    if (!propData) {
-      const fetchProfile = async () => {
-        try {
-          const result = await getCurrentUserProfile();
+  // Fetch profile data using useQuery like other components
+  const { data: userProfileResponse, isLoading } = useQuery({
+    queryKey: ["current-user-profile"],
+    queryFn: getCurrentUserProfile,
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+  });
 
-          if (result.success && result.data) {
-            // Map the API response to Profile interface
-            setProfileData({
-              name: result.data.fullname || result.data.email || "User",
-              email: result.data.email || "",
-              avatar:
-                result.data.profile_photo ||
-                "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/profile-mjss82WnWBRO86MHHGxvJ2TVZuyrDv.jpeg",
-              subscription: result.data.profile?.plan?.tier || "FREE",
-              model: result.data.profile?.plan?.name,
-              is_verified: result.data.is_verified,
-            });
-          }
-        } catch (error) {
-          console.error("Error fetching profile:", error);
-        } finally {
-          setIsLoading(false);
-        }
+  const profileData = React.useMemo(() => {
+    if (propData) return propData;
+    
+    if (userProfileResponse?.success && userProfileResponse?.data) {
+      return {
+        name: userProfileResponse.data.fullname || userProfileResponse.data.email || "User",
+        email: userProfileResponse.data.email || "",
+        avatar:
+          userProfileResponse.data.profile_photo ||
+          "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/profile-mjss82WnWBRO86MHHGxvJ2TVZuyrDv.jpeg",
+        subscription: userProfileResponse.data.profile?.plan?.tier || "FREE",
+        model: userProfileResponse.data.profile?.plan?.name,
+        is_verified: userProfileResponse.data.is_verified,
       };
-
-      fetchProfile();
     }
-  }, [propData]);
+    
+    return SAMPLE_PROFILE_DATA;
+  }, [propData, userProfileResponse]);
 
   const data = profileData;
 

@@ -69,15 +69,9 @@ export const getProfileById = async (id: string): Promise<UserProfile> => {
 
 export async function getCurrentUserProfile() {
   try {
-    const response = await fetch("https://admin.askcrews.com/api/v1/auth/profiles/my-profile/");
-    const data = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    console.log("res", data);
-    return { success: true, data };
+    const response = await axiosInstance.get("/api/proxy/auth/profiles/my-profile/");
+    console.log("res", response.data);
+    return { success: true, data: response.data };
   } catch (error: unknown) {
     console.error("Error fetching user profile:", error);
     return { success: false, error: error instanceof Error ? error.message : "An error occurred" };

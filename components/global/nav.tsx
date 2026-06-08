@@ -13,13 +13,13 @@ const SiteNav = () => {
   const pathnname = usePathname();
   const { isAuthenticated, userType } = useAuth();
 
-  // Filter out Login and Sign Up items if user is a logged-in viewer
-  const filteredNavItems =
-    isAuthenticated && userType === "viewer"
-      ? NAV_ITEMS.filter(
-          (item) => item.label !== "Login" && item.label !== "Sign Up",
-        )
-      : NAV_ITEMS;
+  // Filter out Login and Sign Up items from navbar
+  // Also filter out Rewards for non-authenticated users
+  const filteredNavItems = NAV_ITEMS.filter((item) => {
+    if (item.label === "Login" || item.label === "Sign Up") return false;
+    if (item.label === "Rewards" && !isAuthenticated) return false;
+    return true;
+  });
 
   return (
     <nav className="hidden md:flex items-center gap-6 text-sm">
